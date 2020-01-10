@@ -1,19 +1,51 @@
 import React, {Fragment} from 'react'
-import Skeleton from '@material-ui/lab/Skeleton'
+import Button from '@material-ui/core/Button'
 
-const Home = () => {
+import AutoComplete from '../base/autoComplete'
+import BackdropBase from '../base/backdropBase'
 
+import { useDispatch, useSelector, connect } from "react-redux"
+import { SET_LOGGED } from "../reducers/authReducer"
+
+import {setValorIslogged} from '../actions/authAction'
+
+const Home = (props) => {
+
+    const valueFromAutoComplete = (event, value) => {
+
+           
+    }
+
+    const auth = useSelector(state => state.auth)
+    
     return (
         <Fragment>
-            
-             <div>
-                <Skeleton variant="text" />
-                <Skeleton variant="circle" width={40} height={40} />
-                <Skeleton variant="rect" width={210} height={118} />
-            </div> 
+
+            <div>{JSON.stringify(auth)}</div>
+
+            <Button variant="contained" color="primary" onClick={() => props.setValorIslogged(true)}>
+                Teste
+            </Button>
+
+        {/* <AutoComplete 
+            nome={'teste'} 
+            label={'Opaaaa'} 
+            url={'https://teste.infisio.com.br/produtos'}       
+            chave={'id'}
+            valor={'nome'}
+            defaultChave={1}
+            defaultValor={'TUCA'}
+            getValueSelected={valueFromAutoComplete}
+            /> */}
 
         </Fragment>
     )
 }
 
-export default Home
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setValorIslogged: (auth) => { dispatch(setValorIslogged(auth)) }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Home)

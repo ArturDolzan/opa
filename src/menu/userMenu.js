@@ -1,11 +1,19 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useState, useEffect} from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Badge from '@material-ui/core/Badge'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MailIcon from '@material-ui/icons/Mail'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 
+
 const UserMenu = () => {
+
+	useEffect(() => {
+
+		 return () => {
+		 	
+		 }
+	})
 
     return (
         <Fragment>
@@ -34,16 +42,18 @@ const UserMenu = () => {
 
               </IconButton>
               
-              <IconButton
-                aria-label="Notificações"
-                aria-controls="menu-appbar"
-                aria-haspopup="false"
-                color="inherit"                
-              >
+					<IconButton
+					aria-label="Notificações"
+					aria-controls="menu-appbar"
+					aria-haspopup="false"
+					color="inherit"                
+				>
+				
+					<AccountCircle />
+					
+				</IconButton>
+			  
               
-                <AccountCircle />
-                
-              </IconButton>
         </Fragment>
     )
 

@@ -123,11 +123,12 @@ const MiniDrawer = () => {
           >
             <MenuIcon />
           </IconButton>
-		  <Link to="/" style={{textDecoration: 'inherit', color: 'inherit'}}>
-			<Typography variant="h6" noWrap>
-				OPA
-			</Typography>
-		  </Link>
+
+            <Link to="/" style={{textDecoration: 'inherit', color: 'inherit'}}>
+              <Typography variant="h6" noWrap>
+                Infisio
+              </Typography>
+            </Link>
 
              <div className={classes.menuUser}>              
             	<UserMenu/>  
