@@ -1,11 +1,7 @@
 import React, {Fragment} from 'react'
 import Button from '@material-ui/core/Button'
 
-import AutoComplete from '../base/autoComplete'
-import BackdropBase from '../base/backdropBase'
-
-import { useDispatch, useSelector, connect } from "react-redux"
-import { SET_LOGGED } from "../reducers/authReducer"
+import { useSelector, connect } from "react-redux"
 
 import {setValorIslogged} from '../actions/authAction'
 

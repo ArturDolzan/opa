@@ -1,12 +1,23 @@
 import React, {Fragment} from 'react'
 import Menu from '../menu/menu'
+import Signup from '../login/signup'
 
-const Main = ({match}) => {
+import { useSelector } from "react-redux"
+
+const Main = () => {
+
+    const auth = useSelector(state => state.auth)
 
     return (
         <Fragment>
              
-             <Menu/>
+             {!auth.isLogged && (
+                 <Signup/>
+             )}             
+
+             {auth.isLogged && (
+                 <Menu/>
+             )}             
         </Fragment>
     )
 }
