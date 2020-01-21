@@ -1,25 +1,162 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useEffect} from 'react'
 import Menu from '../menu/menu'
 import Signup from '../login/signup'
+import url from '../config/urlApi'
+import BackdropBase from '../base/backdropBase'
+import AlertDialogBase from '../base/alertDialogBase'
+import FormDialogBase from '../base/formDialogBase'
+import CircularProgressBase from '../base/circularProgressBase'
 
-import { useSelector } from "react-redux"
+import { useSelector, connect } from "react-redux"
+import axios from "axios"
 
-const Main = () => {
+import {setValorIslogged, alterarAuth, setLogout} from '../actions/authAction'
+import {openCircularProgress, closeCircularProgress} from '../actions/circularProgressBaseAction'
+
+const Main = (props) => {
+
+    const [processed, setProcessed] = React.useState(false)
 
     const auth = useSelector(state => state.auth)
+
+    useEffect(() => {
+
+        axios.interceptors.request.use(function (config) {
+            // Do something before request is sent
+            props.openCircularProgress()
+
+            return config;
+          }, function (error) {
+            // Do something with request error
+            return Promise.reject(error);
+          })
+
+        axios.interceptors.response.use(function (response) {
+            // Do something with response data
+
+            props.closeCircularProgress()
+
+            return response
+          }, function (error) {
+            // Do something with response error
+            props.closeCircularProgress()
+            
+            if(error.response.status === 401) { handle401() }
+    
+            // Trow errr again (may be need for some other catch)
+            return Promise.reject(error)
+        })
+        
+        let token = localStorage.getItem("token")
+        let email = localStorage.getItem("email")
+        let idtenant = localStorage.getItem("idtenant")
+        let name = localStorage.getItem("name")
+
+        if (token) {
+
+            axios.defaults.headers.common.Authorization = `${token}`
+
+            //-- Validar token no backend
+
+            validarToken((data) => {
+                
+                if (data.response) {
+
+                    if (data.response.status === 401) {
+                        
+                        axios.defaults.headers.common.Authorization = null
+                        props.setValorIslogged(false)
+                        setProcessed(true)
+
+                        return false
+                    }
+                }
+
+                props.setValorIslogged(true)
+
+                props.alterarAuth({
+                    isLogged: true,
+                    email: email,
+                    idtenant: idtenant,
+                    token: token,
+                    name
+                })
+
+                setProcessed(true)
+            })
+
+        } else {
+
+            axios.defaults.headers.common.Authorization = null
+            props.setValorIslogged(false)
+
+            setProcessed(true)
+        }
+
+        return () => {
+            axios.interceptors.request.use(null)
+            axios.interceptors.response.use(null)
+        }        
+      }, [])
+
+    const validarToken = (cb) => {
+
+        axios.post(`${url}/validarToken`)
+        .then(cb)
+        .catch(cb)
+    }
+
+    const handle401 = () => {
+
+        if (processed) {
+            props.setLogout()
+        }        
+    }
+
+      const renderMain = () => {
+
+        return (
+            <Fragment>
+                
+                 {!auth.isLogged && (
+                     <Signup/>
+                 )}             
+    
+                 {auth.isLogged && (
+                     <Menu/>
+                 )}             
+
+                 <AlertDialogBase/>
+                 <FormDialogBase/>
+                 <CircularProgressBase/>
+
+            </Fragment>
+        )
+      }
 
     return (
         <Fragment>
              
-             {!auth.isLogged && (
-                 <Signup/>
-             )}             
-
-             {auth.isLogged && (
-                 <Menu/>
-             )}             
+             {!processed ? (
+                 <BackdropBase/>
+             ) : 
+               (
+                renderMain()
+               )
+            }            
+        
         </Fragment>
     )
 }
 
-export default Main
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setValorIslogged: (auth) => { dispatch(setValorIslogged(auth)) },
+        alterarAuth: (auth) => { dispatch(alterarAuth(auth)) },
+        setLogout: () => { dispatch(setLogout()) },
+        openCircularProgress: () => { dispatch(openCircularProgress()) },
+        closeCircularProgress: () => { dispatch(closeCircularProgress()) }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Main)

@@ -126,7 +126,7 @@ const MiniDrawer = () => {
 
             <Link to="/" style={{textDecoration: 'inherit', color: 'inherit'}}>
               <Typography variant="h6" noWrap>
-                Infisio
+                TESTE
               </Typography>
             </Link>
 

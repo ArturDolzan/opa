@@ -1,46 +1,76 @@
-import React, {Fragment} from 'react'
-import Button from '@material-ui/core/Button'
+import React, {Fragment, useEffect} from 'react'
 
-import { useSelector, connect } from "react-redux"
-
-import {setValorIslogged} from '../actions/authAction'
+import { connect } from "react-redux"
+import {openDialogForm} from '../actions/formDialogBaseAction'
+import {open} from '../actions/alertDialogBaseAction'
+import LaunchDialog from './launchDialog/launchDialog'
+import ClinicasController from '../controller/clinicas/clinicasController'
+  
 
 const Home = (props) => {
 
-    const valueFromAutoComplete = (event, value) => {
+    useEffect(() => {
 
-           
+        checkFirstClinic()
+
+        return () => {
+            
+        }        
+    }, [])
+
+    const checkFirstClinic = () => {
+
+        let clinicasController = new ClinicasController()
+        clinicasController.recuperar(1, 1, (ret) => {
+
+            if (ret.data.data.length === 0) {
+                renderLaunchClinicDialog()
+            }
+
+        }, (error) => {
+
+            props.open({
+                title: "Ops",
+                text: `Não foi possível ler a clínica. \n Erro: ${error.response.statusText}`
+            })
+        })
     }
 
-    const auth = useSelector(state => state.auth)
-    
+    const renderLaunchClinicDialogContent = () => {
+
+        return (
+            <Fragment>
+
+                <LaunchDialog/>
+            </Fragment>
+        )
+    }
+
+    const renderLaunchClinicDialog = () => {
+
+        props.openDialogForm({
+            title: "Olá",
+            content: renderLaunchClinicDialogContent(),
+            actions: null,
+            maxWidth: 'md',
+            minHeight: '400px'
+        })
+    }
+
     return (
         <Fragment>
-
-            <div>{JSON.stringify(auth)}</div>
-
-            <Button variant="contained" color="primary" onClick={() => props.setValorIslogged(true)}>
-                Teste
-            </Button>
-
-        {/* <AutoComplete 
-            nome={'teste'} 
-            label={'Opaaaa'} 
-            url={'https://teste.infisio.com.br/produtos'}       
-            chave={'id'}
-            valor={'nome'}
-            defaultChave={1}
-            defaultValor={'TUCA'}
-            getValueSelected={valueFromAutoComplete}
-            /> */}
+            
+            HOME
 
         </Fragment>
     )
 }
 
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        setValorIslogged: (auth) => { dispatch(setValorIslogged(auth)) }
+        openDialogForm: (data) => { dispatch(openDialogForm(data)) },
+        open: (data) => { dispatch(open(data)) }
     }
 }
 
