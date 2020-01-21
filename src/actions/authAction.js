@@ -35,6 +35,8 @@ export const setAuth = (auth) => (
             localStorage.setItem("email", response.data.email)
             localStorage.setItem("idtenant", response.data.idtenant)
             localStorage.setItem("name", response.data.name)
+            
+            axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
 
             dispatch(alterarAuth({
                 isLogged: true,
