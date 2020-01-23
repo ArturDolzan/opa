@@ -6,6 +6,7 @@ import BackdropBase from '../base/backdropBase'
 import AlertDialogBase from '../base/alertDialogBase'
 import FormDialogBase from '../base/formDialogBase'
 import CircularProgressBase from '../base/circularProgressBase'
+import SnackBase from '../base/snackBase'
 
 import { useSelector, connect } from "react-redux"
 import axios from "axios"
@@ -129,6 +130,7 @@ const Main = (props) => {
                  <AlertDialogBase/>
                  <FormDialogBase/>
                  <CircularProgressBase/>
+                 <SnackBase/>
 
             </Fragment>
         )

@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import {openDialogForm} from '../actions/formDialogBaseAction'
 import {open} from '../actions/alertDialogBaseAction'
 import LaunchDialog from './launchDialog/launchDialog'
-import ClinicasController from '../controller/clinicas/clinicasController'
+import ClinicasController from '../controller/clinica/clinicas/clinicasController'
   
 
 const Home = (props) => {
@@ -61,7 +61,6 @@ const Home = (props) => {
         <Fragment>
             
             HOME
-
         </Fragment>
     )
 }

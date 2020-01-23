@@ -1,4 +1,4 @@
-import ModelBase from '../base/modelBase'
+import ModelBase from '../../base/modelBase'
 
 class Clinicas extends ModelBase {
     

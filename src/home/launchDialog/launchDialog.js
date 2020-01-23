@@ -17,8 +17,8 @@ import Welcome from './welcome'
 import ClinicForm from './clinicForm/clinicForm'
 import Final from './final'
 
-import Clinicas from '../../model/clinicas/clinicas'
-import ClinicasController from '../../controller/clinicas/clinicasController'
+import Clinicas from '../../model/clinica/clinicas/clinicas'
+import ClinicasController from '../../controller/clinica/clinicas/clinicasController'
 
 const useStyles = makeStyles(theme => ({
   root: {

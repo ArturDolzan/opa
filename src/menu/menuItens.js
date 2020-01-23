@@ -1,11 +1,40 @@
 import React from 'react'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
+import HomeIcon from '@material-ui/icons/Home'
+import EventIcon from '@material-ui/icons/Event'
+import LocalHopitalIcon from '@material-ui/icons/LocalHospital'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const MenuItens = [
     {
-        icone: <InboxIcon />,
-        nome: 'Caixa de Entrada',
-        link: '/modulo1'
+        icone: <HomeIcon />,
+        nome: 'Home',
+        link: '/home',
+        divider: false
+    },
+    {
+        icone: <EventIcon />,
+        nome: 'Agenda',
+        link: '/agenda',
+        divider: false
+    },
+    {
+        icone: <LocalHopitalIcon />,
+        nome: 'Clinica',
+        link: '/clinica',
+        divider: false
+    },
+    {
+        icone: <AttachMoneyIcon />,
+        nome: 'Faturamento',
+        link: '/faturamento',
+        divider: true
+    },
+    {
+        icone: <SettingsIcon />,
+        nome: 'Configurações',
+        link: '/configuracoes',
+        divider: false
     }
 ]
 

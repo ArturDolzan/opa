@@ -1,6 +1,6 @@
 import axios from 'axios'
-import url from '../../config/urlApi'
-import Clinicas from '../../model/clinicas/clinicas'
+import url from '../../../config/urlApi'
+import Clinicas from '../../../model/clinica/clinicas/clinicas'
 
 export const recuperar = (qtdePagina, numeroPagina, cbSucess, cbError) => {
 

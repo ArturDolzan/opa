@@ -3,40 +3,43 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Slide from '@material-ui/core/Slide'
 
-const TransitionUp = (props) => {
-  return <Slide {...props} direction="up" />
-}
+import { useSelector, connect } from "react-redux"
+import {openSnackBase, closeSnackBase} from '../actions/snackBaseAction'
 
-const SnackBase = () => {
 
-  const [open, setOpen] = React.useState(false)
-  const [transition, setTransition] = React.useState(undefined)
+const SnackBase = (props) => {
 
-  const handleClick = Transition => () => {
-    setTransition(() => Transition)
-    setOpen(true)
-  }
+  const snackBase = useSelector(state => state.snackBase)
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    props.closeSnackBase()
   }
 
   return (
     <div>
-      
-      <Button onClick={handleClick(TransitionUp)}>Up</Button>
 
       <Snackbar
-        open={open}
+        open={snackBase.opened}
+        autoHideDuration={3000}
         onClose={handleClose}
-        TransitionComponent={transition}
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<span id="message-id">I love snacks</span>}
+        message={<span id="message-id">{snackBase.text}</span>}
       />
     </div>
   )
 }
 
-export default SnackBase
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openSnackBase: (text) => { dispatch(openSnackBase(text)) },
+    closeSnackBase: () => { dispatch(closeSnackBase()) }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SnackBase)

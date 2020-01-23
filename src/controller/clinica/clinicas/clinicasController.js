@@ -1,5 +1,5 @@
-import {recuperar, inserirPrimeiraClinica} from '../../store/clinicas/clinicasStore'
-import Clinicas from '../../model/clinicas/clinicas'
+import {recuperar, inserirPrimeiraClinica} from '../../../store/clinica/clinicas/clinicasStore'
+import Clinicas from '../../../model/clinica/clinicas/clinicas'
 
 class ClinicasController {
 
