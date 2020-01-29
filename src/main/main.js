@@ -4,6 +4,7 @@ import Signup from '../login/signup'
 import url from '../config/urlApi'
 import BackdropBase from '../base/backdropBase'
 import AlertDialogBase from '../base/alertDialogBase'
+import ConfirmationDialogBase from '../base/confirmationDialogBase'
 import FormDialogBase from '../base/formDialogBase'
 import CircularProgressBase from '../base/circularProgressBase'
 import SnackBase from '../base/snackBase'
@@ -128,6 +129,7 @@ const Main = (props) => {
                  )}             
 
                  <AlertDialogBase/>
+                 <ConfirmationDialogBase/>
                  <FormDialogBase/>
                  <CircularProgressBase/>
                  <SnackBase/>

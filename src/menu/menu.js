@@ -15,6 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import {Link} from 'react-router-dom'
 import UserMenu from './userMenu'
@@ -161,10 +162,12 @@ const MiniDrawer = () => {
         <List>
           {MenuItens.map((item, idx) => (
             <Link key={item.nome} to={item.link} style={{textDecoration: 'inherit', color: 'inherit'}}>
-                <ListItem button >
-                <ListItemIcon>{item.icone}</ListItemIcon>
-                <ListItemText primary={item.nome} />                
-                </ListItem>
+                <Tooltip title={item.nome} placement="right-end">
+                  <ListItem button >
+                  <ListItemIcon>{item.icone}</ListItemIcon>
+                  <ListItemText primary={item.nome} />                
+                  </ListItem>
+                </Tooltip>
 
                 {item.divider && (
                   <Divider />

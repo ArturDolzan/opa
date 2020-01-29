@@ -32,6 +32,7 @@ const AlertDialogBase = (props) => {
           <Button onClick={props.close} color="primary">
             Fechar
           </Button>          
+
         </DialogActions>
       </Dialog>
     </div>

@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab'
 import CheckIcon from '@material-ui/icons/Check'
 import SaveIcon from '@material-ui/icons/Save'
 import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,14 +32,6 @@ const useStyles = makeStyles(theme => ({
     left: -6,
     zIndex: 1,
   },
-  buttonProgress: {
-    color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
 }))
 
 const ButtonSave = (props) => {
@@ -52,26 +45,29 @@ const ButtonSave = (props) => {
   return (
 
     <div className={classes.root}>
-      <div className={classes.wrapper}>
-        <Fab
-          aria-label="Salvar"
-          color="primary"
-          className={buttonClassname}
-          onClick={props.clickSave}
-        >
-          {props.success ? <CheckIcon /> : <SaveIcon />}
+    <Tooltip title="Salvar" placement="right-end">
+        <div className={classes.wrapper}>
+          <Fab
+            aria-label="Salvar"
+            color="primary"
+            className={buttonClassname}
+            onClick={props.clickSave}
+            disabled={props.disabled}
+          >
+            {props.success ? <CheckIcon /> : <SaveIcon />}
 
-        </Fab>
-        {props.loading && <CircularProgress size={68} className={classes.fabProgress} />}
-      </div>
-      
+          </Fab>
+          {props.loading && <CircularProgress size={68} className={classes.fabProgress} />}
+        </div>
+      </Tooltip>
     </div>
   )
 }
 
 ButtonSave.propTypes = {
     loading: PropTypes.bool.isRequired,
-    success: PropTypes.bool.isRequired
+    success: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool.isRequired,
 }
 
 export default ButtonSave

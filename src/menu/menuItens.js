@@ -20,7 +20,7 @@ const MenuItens = [
     },
     {
         icone: <LocalHopitalIcon />,
-        nome: 'Clinica',
+        nome: 'Clínica',
         link: '/clinica',
         divider: false
     },
