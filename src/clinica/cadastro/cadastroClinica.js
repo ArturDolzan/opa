@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -23,8 +24,7 @@ import {openSnackBase} from '../../actions/snackBaseAction'
 
 const useStyles = makeStyles(theme => ({   
     root: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(1),
+        paddingTop: theme.spacing(1),        
       },
     container: {
       paddingTop: theme.spacing(3),
@@ -41,11 +41,24 @@ const useStyles = makeStyles(theme => ({
         paddingRight: theme.spacing(2),
     },
     backButton: {
-        marginBottom: theme.spacing(2),
+        marginLeft: theme.spacing(2),
     },
     removeButton: {
         marginLeft: "auto"
     },
+    paperHeader:{
+        display: "flex",
+        boxShadow: "0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15)",
+        marginBottom: theme.spacing(2),
+    },
+    divPaperHeaderGrid: {
+        minHeight: "75px", 
+        display: "flex", 
+        alignItems: "center"
+    },
+    paper:{
+        boxShadow: "0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15)"
+    }
 }))
 
 const formikEnhancer = withFormik({
@@ -189,15 +202,22 @@ const CadastroClinicaForm = props => {
   return (
     <Fragment> 
 
-        <form className={classes.root} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
 
-            <Tooltip title="Voltar" placement="right-end">
-                <IconButton className={classes.backButton} aria-label="Atualizar" color="primary" onClick={() => props.history.goBack()}>
-                    <ArrowBackIcon />
-                </IconButton>
-            </Tooltip>
+            <Paper className={classes.paperHeader}>
+                <div className={classes.divPaperHeaderGrid}>
+                    <Tooltip title="Voltar" placement="right-end">
+                        <IconButton className={classes.backButton} aria-label="Atualizar" color="primary" onClick={() => props.history.goBack()}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Typography variant="h6">
+                        Clínica
+                    </Typography>
+                </div>
+            </Paper>
             
-            <Paper >
+            <Paper className={classes.paper}>
 
                 {retrieve && (
 
@@ -264,7 +284,6 @@ const CadastroClinicaForm = props => {
                             value={values.endereco || ""}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            required={true}
                         />
 
                     </Grid>
@@ -283,9 +302,11 @@ const CadastroClinicaForm = props => {
                     <ButtonSave clickSave={handleSave} loading={isSubmitting} success={false} disabled={((Object.keys(errors).length !== 0 || !dirty) && errors.constructor === Object)}/>                                
                     
                     <Tooltip title="Remover" placement="right-end">
-                        <IconButton onClick={handleRemove} disabled={(values.id === 0)} aria-label="Remover" color="secondary" >
-                            <DeleteIcon />
-                        </IconButton>
+                        <span>
+                            <IconButton onClick={handleRemove} disabled={(values.id === 0)} aria-label="Remover" color="secondary" >
+                                <DeleteIcon />
+                            </IconButton>
+                        </span>
                     </Tooltip>
                 </div>
 

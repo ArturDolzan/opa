@@ -22,7 +22,17 @@ const MenuItens = [
         icone: <LocalHopitalIcon />,
         nome: 'Clínica',
         link: '/clinica',
-        divider: false
+        divider: false,
+        listas: [
+            {
+                nome: 'Clínicas',
+                path: '/clinica/clinica'
+            },
+            {
+                nome: 'Pacientes',
+                path: '/clinica/paciente'
+            }
+        ]
     },
     {
         icone: <AttachMoneyIcon />,

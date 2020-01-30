@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -16,6 +16,10 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
+import ListIcon from '@material-ui/icons/List'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import Popover from '@material-ui/core/Popover'
+import Container from '@material-ui/core/Container'
 
 import {Link} from 'react-router-dom'
 import UserMenu from './userMenu'
@@ -27,6 +31,31 @@ const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
+  },
+  container: {
+    paddingTop: theme.spacing(1.5),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    display: 'flex',
+    
+  },
+  containerItems: {
+    marginTop: theme.spacing(1.5),
+    marginBottom: theme.spacing(1.5),
+    marginRight: theme.spacing(2)
+  },
+  containerItemsLink: {
+    padding: theme.spacing(0.2)
+  },
+  links: {
+    textDecoration: 'inherit', 
+    color: '#2196F3',
+    '&:hover': {
+      textDecoration: "underline",
+   },
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -85,6 +114,14 @@ const useStyles = makeStyles(theme => ({
   },
   menuUser: {
       marginLeft: 'auto'
+  },
+  iconList: {
+    position: 'absolute',
+    bottom: '0',
+    right: '0',
+    '&:hover': {
+      color: "#2196F3",      
+   },
   }
 }))
 
@@ -94,6 +131,8 @@ const MiniDrawer = () => {
     const classes = useStyles()
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
+    const [anchorEl, setAnchorEl] = React.useState(null)
+    const [listas, setListas] = React.useState([])
 
     const handleDrawerOpen = () => {
       setOpen(true)
@@ -102,6 +141,22 @@ const MiniDrawer = () => {
     const handleDrawerClose = () => {
       setOpen(false)
     }
+
+    const clickExpandMenu = (e, listas) => {
+
+      e.preventDefault()
+      
+      setListas(listas || [])
+
+      setAnchorEl(e.currentTarget)
+    }
+
+    const handleClose = () => {
+      setAnchorEl(null)
+    }
+
+    const openPop = Boolean(anchorEl)
+    const id = openPop ? 'simple-popover' : undefined
 
   return (
     <div className={classes.root}>
@@ -164,8 +219,19 @@ const MiniDrawer = () => {
             <Link key={item.nome} to={item.link} style={{textDecoration: 'inherit', color: 'inherit'}}>
                 <Tooltip title={item.nome} placement="right-end">
                   <ListItem button >
-                  <ListItemIcon>{item.icone}</ListItemIcon>
-                  <ListItemText primary={item.nome} />                
+                    <ListItemIcon>
+                        
+                        <span>
+                          {item.icone}
+
+                          {item.listas && (
+                              <ExpandMore onClick={(e) => {clickExpandMenu(e, item.listas)}} fontSize={'small'} className={classes.iconList}/>
+                          )}                          
+                        </span>
+
+                    </ListItemIcon>
+                    <ListItemText primary={item.nome} />
+
                   </ListItem>
                 </Tooltip>
 
@@ -180,8 +246,53 @@ const MiniDrawer = () => {
       </Drawer>
 
 	  <MenuModulos classes={classes}/>
+
+    <Popover
+          id={id}
+          open={openPop}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+          }}
+          transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+          }}
+      >
+          {renderDetailWindow(listas, classes, handleClose)}
+      </Popover>
       
     </div>
+  )
+}
+
+const renderDetailWindow = (list, classes, handleClose) => {
+
+  return (
+      <Fragment>
+          
+          <Container maxWidth="sm" className={classes.container}>
+              <Typography noWrap  color="textSecondary">
+                Listas
+              </Typography>
+          </Container>
+
+          <Container className={classes.containerItems}>
+              
+              {list.map((item, idx) => (
+
+                <div key={item.nome} className={classes.containerItemsLink}>
+                    <Link to={item.path} className={classes.links} onClick={handleClose}>
+                        {item.nome}
+                    </Link>
+                </div>
+
+              ))}
+          </Container>
+
+      </Fragment>
   )
 }
 

@@ -59,7 +59,7 @@ const formikEnhancer = withFormik({
       .email('Formato de e-mail não é válido!'),
   }),
 
-  mapPropsToValues: () => ({id: '', nome: ''}),
+  mapPropsToValues: () => ({id: 0, email: '', nome: ''}),
 
   handleSubmit: (payload, { setSubmitting }) => {
     //alert(payload.email)
