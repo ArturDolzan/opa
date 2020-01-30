@@ -16,11 +16,11 @@ import TableRow from '@material-ui/core/TableRow'
 import IconButton from '@material-ui/core/IconButton'
 import AutoRenewIcon from '@material-ui/icons/Autorenew'
 import Tooltip from '@material-ui/core/Tooltip'
+import {withRouter} from 'react-router-dom'
 import { connect } from "react-redux"
 import {open} from '../../actions/alertDialogBaseAction'
+import PropTypes from 'prop-types'
 
-import Clinicas from '../../model/clinica/clinicas/clinicas'
-import ClinicasController from '../../controller/clinica/clinicas/clinicasController'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const ListaClinica = (props) => {
+const ListaBase = (props) => {
 
     const classes = useStyles()
 
@@ -86,8 +86,7 @@ const ListaClinica = (props) => {
 
     const buildColumns = () => {
 
-        let clinicas = new Clinicas()
-        let fields = clinicas.fields.filter(item => !item.hidden)
+        let fields = props.model.fields.filter(item => !item.hidden)
 
         fields = fields.map((item, idx) => {
             
@@ -105,9 +104,7 @@ const ListaClinica = (props) => {
 
     const listar = (qtdePagina, numeroPagina) => {
 
-        let clinicasController = new ClinicasController()
-
-        let data = clinicasController.recuperar(qtdePagina, numeroPagina, (ret) => {
+        let data = props.controller.recuperar(qtdePagina, numeroPagina, (ret) => {
 
             setRows([...ret.data.data])            
         }, (error) => {
@@ -151,7 +148,6 @@ const ListaClinica = (props) => {
     }
 
 
-
     return (
         <Fragment>
 
@@ -171,7 +167,7 @@ const ListaClinica = (props) => {
                                 </Tooltip>
 
                                 <Typography variant="h6">
-                                    Clínicas
+                                    {props.title}
                                 </Typography>
 
                                 <Tooltip title="Inserir novo" placement="left-end">
@@ -269,4 +265,10 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(ListaClinica)
+ListaBase.propTypes = {
+    model: PropTypes.any.isRequired,
+    controller: PropTypes.any.isRequired,
+    title: PropTypes.string.isRequired,
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(ListaBase))
