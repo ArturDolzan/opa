@@ -69,10 +69,6 @@ const ListaBase = (props) => {
 
     const classes = useStyles()
 
-    const columnsFormat = [
-        { id: 'nome',  minWidth: 150 }
-    ]
-
     useEffect(() => {
 
         buildColumns()
@@ -90,7 +86,7 @@ const ListaBase = (props) => {
 
         fields = fields.map((item, idx) => {
             
-            let exists = columnsFormat.filter(data => data.id === item.id)[0]
+            let exists = props.columnsFormat.filter(data => data.id === item.id)[0]
 
             if (exists) {                
                 item = {...item, ...exists}
@@ -269,6 +265,7 @@ ListaBase.propTypes = {
     model: PropTypes.any.isRequired,
     controller: PropTypes.any.isRequired,
     title: PropTypes.string.isRequired,
+    columnsFormat: PropTypes.any.isRequired,
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(ListaBase))

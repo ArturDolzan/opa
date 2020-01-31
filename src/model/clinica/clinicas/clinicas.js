@@ -19,17 +19,6 @@ class Clinicas extends ModelBase {
         ]
 
         this.fields = [...this.fields, ...model]
-
-        // this.nome = null
-        // this.email = null
-        // this.razao_social = null
-        // this.idestado = null
-        // this.idcidade = null
-        // this.cep = null
-        // this.endereco = null
-        // this.fone = null
-        // this.cnpj = null
-        // this.ativo = true
     }
 }
 

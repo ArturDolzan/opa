@@ -1,4 +1,5 @@
-import React, {Fragment} from 'react'
+﻿import React, {Fragment} from 'react'
+import ptBR from "date-fns/locale/pt-BR"
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
 import TextInputBase from '../../base/input/textInputBase'
@@ -6,9 +7,17 @@ import Grid from '@material-ui/core/Grid'
 import InputMask from "react-input-mask"
 import { makeStyles } from '@material-ui/core/styles'
 
+import DateFnsUtils from '@date-io/date-fns'
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+  DatePicker
+} from '@material-ui/pickers'
+import 'date-fns'
+
 import CadastroBase from '../../base/crud/cadastroBase'
-import Clinicas from '../../model/clinica/clinicas/clinicas'
-import ClinicasController from '../../controller/clinica/clinicas/clinicasController'
+import Pacientes from '../../model/clinica/pacientes/pacientes'
+import PacientesController from '../../controller/clinica/pacientes/pacientesController'
 
 
 const formikEnhancer = withFormik({
@@ -16,17 +25,22 @@ const formikEnhancer = withFormik({
 	validationSchema: Yup.object().shape({    
 	  nome: Yup.string()
 		 .required('O campo nome é obrigatório!')
-		 .nullable(),		 
+		 .nullable(),
 	  email: Yup.string()
 		 .required('O campo e-mail é obrigatório!')
-		 .nullable()
-		 .email('Formato de e-mail não é válido!'),
+		 .email('Formato de e-mail não é válido!')
+		 .nullable(),
+	  sexo: Yup.string()
+		 .required('O campo Sexo é obrigatório!')
+		 .nullable(),
+	  data_nascimento: Yup.date('Formato de data não é válido!')
+		 .nullable(),
 	}),
  
 	mapPropsToValues: () => {
 
 		 let obj = {}
-		 new Clinicas().fields.map(x => x.id).map( (item, idx) => {
+		 new Pacientes().fields.map(x => x.id).map( (item, idx) => {
 			  
 			  obj[item] = null
 
@@ -52,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const CadastroClinicaForm = props => {
+const CadastroPacienteForm = props => {
 	
 	const {handleSubmit} = props
 	const classes = useStyles()	
@@ -65,8 +79,8 @@ const CadastroClinicaForm = props => {
 
 				<CadastroBase
 					{...props}
-					controller={new ClinicasController()}
-					title={"Clínica"}
+					controller={new PacientesController()}
+					title={"Paciente"}
 					retrieve={retrieve}
 					setRetrieve={setRetrieve}
 					renderForm={renderForm(props, classes, retrieve)}
@@ -93,6 +107,7 @@ const renderForm = (props, classes, retrieve) => {
 		initialValues,
 		setSubmitting,
 		match,
+		error,
   } = props
 
 	return (
@@ -106,8 +121,8 @@ const renderForm = (props, classes, retrieve) => {
 					<Grid item md={6}>     
 						<TextInputBase
 							id="nome"
-							label="Nome da Clínica"
-							placeholder="Nome da Clínica"
+							label="Nome"
+							placeholder="Nome"
 							error={touched.nome && errors.nome}
 							value={values.nome || ""}
 							onChange={handleChange}
@@ -137,22 +152,9 @@ const renderForm = (props, classes, retrieve) => {
 					</Grid>
 
 					<Grid item md={3}>     
-						<InputMask mask="99.999.999/9999-99" value={values.cnpj || ""} onChange={handleChange} onBlur={handleBlur}>
-							{(inputProps) => <TextInputBase id="cnpj" label="CNPJ" placeholder="CNPJ" error={touched.cnpj && errors.cnpj} {...inputProps}  />}
+						<InputMask mask="999.999.999-99" value={values.cpf || ""} onChange={handleChange} onBlur={handleBlur}>
+							{(inputProps) => <TextInputBase id="cpf" label="CPF" placeholder="CPF" error={touched.cpf && errors.cpf} {...inputProps}  />}
 						</InputMask>
-					</Grid>
-
-					<Grid item md={6} >     
-						<TextInputBase
-							id="razao_social"
-							label="Razão Social"
-							placeholder="Razão Social"
-							error={touched.razao_social && errors.razao_social}
-							value={values.razao_social || ""}
-							onChange={handleChange}
-							onBlur={handleBlur}
-						/>
-
 					</Grid>
 
 					<Grid item md={6} >     
@@ -168,10 +170,23 @@ const renderForm = (props, classes, retrieve) => {
 
 					</Grid>
 
-					<Grid item md={3}>     
-						<InputMask mask="99.999-999" value={values.cep || ""} onChange={handleChange} onBlur={handleBlur}>
-							{(inputProps) => <TextInputBase id="cep" label="CEP" placeholder="CEP" error={touched.cep && errors.cep} {...inputProps}  />}
-						</InputMask>
+					<Grid item md={6} >
+						<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
+							<DatePicker
+								disableToolbar
+								variant="outlined"
+								format="dd/MM/yyyy"
+								margin="normal"
+								id="data_nascimento"
+								label="Data nascimento"
+								value={values.data_nascimento}
+								error={touched.data_nascimento && errors.data_nascimento}
+								helperText={error}
+								onChange={(_, dateString) => {
+									setFieldValue('data_nascimento', dateString)
+								}}								
+							/>
+						</MuiPickersUtilsProvider>
 					</Grid>
 
 				</Grid>
@@ -182,6 +197,6 @@ const renderForm = (props, classes, retrieve) => {
 
 }
 
-const CadastroClinica = formikEnhancer(CadastroClinicaForm)
+const CadastroPaciente = formikEnhancer(CadastroPacienteForm)
 
-export default CadastroClinica
+export default CadastroPaciente

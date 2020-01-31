@@ -5,6 +5,7 @@ import ClinicasController from '../../controller/clinica/clinicas/clinicasContro
 
 const ListaClinica = (props) => {
 
+    const columnsFormat = []
 
     return (
         <Fragment>
@@ -13,6 +14,7 @@ const ListaClinica = (props) => {
                 model={new Clinicas()}
                 controller={new ClinicasController()}
                 title={"Clínicas"}
+                columnsFormat={columnsFormat}
             />
 
         </Fragment>

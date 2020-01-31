@@ -23,15 +23,15 @@ const MenuItens = [
         nome: 'Clínica',
         link: '/clinica',
         divider: false,
-        listas: [
+        listas: [            
+            {
+                nome: 'Pacientes',
+                path: '/clinica/paciente'
+            },
             {
                 nome: 'Clínicas',
                 path: '/clinica/clinica'
             },
-            {
-                nome: 'Pacientes',
-                path: '/clinica/paciente'
-            }
         ]
     },
     {

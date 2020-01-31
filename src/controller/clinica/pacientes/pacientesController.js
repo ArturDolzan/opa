@@ -1,6 +1,6 @@
-import {recuperar, recuperarPorId, salvar, remover, inserirPrimeiraClinica} from '../../../store/clinica/clinicas/clinicasStore'
+import {recuperar, recuperarPorId, salvar, remover} from '../../../store/clinica/pacientes/pacientesStore'
 
-class ClinicasController {
+class PacientesController {
 
     recuperar = (qtdePagina, numeroPagina, cbSucess, cbError) => {
 
@@ -21,11 +21,6 @@ class ClinicasController {
 
         remover(id, cbSucess, cbError)
     }
-
-    inserirPrimeiraClinica = (Clinicas, cbSucess, cbError) => {
-
-        inserirPrimeiraClinica(Clinicas, cbSucess, cbError)
-    }
 }
 
-export default ClinicasController
+export default PacientesController

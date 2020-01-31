@@ -3,35 +3,28 @@ import url from '../../../config/urlApi'
 
 export const recuperar = (qtdePagina, numeroPagina, cbSucess, cbError) => {
 
-    axios.get(`${url}/clinicas/${qtdePagina}/${numeroPagina}`)
+    axios.get(`${url}/pacientes/${qtdePagina}/${numeroPagina}`)
      .then(cbSucess)
      .catch(cbError)
 }
 
 export const recuperarPorId = (id, cbSucess, cbError) => {
 
-    axios.get(`${url}/clinicas/${id}`)
+    axios.get(`${url}/pacientes/${id}`)
      .then(cbSucess)
      .catch(cbError)
 }
 
 export const salvar = (data, cbSucess, cbError) => {
 
-    axios.post(`${url}/clinicas`, data)
+    axios.post(`${url}/pacientes`, data)
      .then(cbSucess)
      .catch(cbError)
 }
 
 export const remover = (id, cbSucess, cbError) => {
 
-    axios.delete(`${url}/clinicas/${id}`)
+    axios.delete(`${url}/pacientes/${id}`)
      .then(cbSucess)
      .catch(cbError)
-}
-
-export const inserirPrimeiraClinica = (Clinicas, cbSucess, cbError) => {
-
-    axios.post(`${url}/clinicas`, Clinicas)
-    .then(cbSucess)
-    .catch(cbError)    
 }
