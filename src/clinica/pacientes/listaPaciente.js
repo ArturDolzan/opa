@@ -15,6 +15,7 @@ const ListaPaciente = (props) => {
                 controller={new PacientesController()}
                 title={"Pacientes"}
                 columnsFormat={columnsFormat}
+                filterPlaceholder={"Filtrar por nome, email, etc..."}
             />
 
         </Fragment>

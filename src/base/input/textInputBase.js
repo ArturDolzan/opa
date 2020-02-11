@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import TextField from '@material-ui/core/TextField'
+import PropTypes from 'prop-types'
 
 const TextInputBase = ({ type, id, label, error, value, onChange, required, ...props }) => {
 
@@ -16,12 +17,20 @@ const TextInputBase = ({ type, id, label, error, value, onChange, required, ...p
               size={"small"} 
               error={error ? true : false}
               helperText={error}
-              style={{width: "100%"}}
+              fullWidth={true}
               required={required || false}
               {...props}
             />
         </Fragment>    
       )
+}
+
+TextInputBase.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  type: PropTypes.any,
+  required: PropTypes.bool,
 }
 
 export default TextInputBase

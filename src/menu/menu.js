@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   containerItemsLink: {
-    padding: theme.spacing(0.2)
+    padding: theme.spacing(0.3)
   },
   links: {
     textDecoration: 'inherit', 

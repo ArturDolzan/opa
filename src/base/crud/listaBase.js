@@ -20,6 +20,9 @@ import {withRouter} from 'react-router-dom'
 import { connect } from "react-redux"
 import {open} from '../../actions/alertDialogBaseAction'
 import PropTypes from 'prop-types'
+import ChipInput from 'material-ui-chip-input'
+import Search from '@material-ui/icons/Search'
+import "moment/locale/pt-br"
 
 
 const useStyles = makeStyles(theme => ({
@@ -80,6 +83,7 @@ const ListaBase = (props) => {
         }        
     }, [])
 
+    
     const buildColumns = () => {
 
         let fields = props.model.fields.filter(item => !item.hidden)
@@ -98,9 +102,39 @@ const ListaBase = (props) => {
         setColumns(fields)
     }
 
+    const formatCol = (column, row) => {
+
+        if (column.enum) {
+            return formatColEnum(column, row)
+        }
+    
+        if (column.type == "date") {
+            return formatColDate(column, row)
+        }
+
+        return row[column.id]
+    }
+
+    const formatColEnum = (column, row) => {
+
+        let data = column.enum.filter(x => x.id == row[column.id])[0]
+    
+        if (!data) return row[column.id]
+    
+        return data.label
+    }
+
+    const formatColDate = (column, row) => {
+
+        if (!row[column.id]) return 
+
+        return row[column.id].replace(/\s\d{2}:\d{2}:\d{2,4}$/, '')
+        //return moment.utc(row[column.id]).format("DD/MM/YYYY")
+    }
+
     const listar = (qtdePagina, numeroPagina) => {
 
-        let data = props.controller.recuperar(qtdePagina, numeroPagina, (ret) => {
+        let data = props.controller.recuperar(qtdePagina, numeroPagina, filter, (ret) => {
 
             setRows([...ret.data.data])            
         }, (error) => {
@@ -117,6 +151,7 @@ const ListaBase = (props) => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5)
     const [rows, setRows] = React.useState([])
     const [columns, setColumns] = React.useState([])
+    const [filter, setFilter] = React.useState([])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
@@ -143,6 +178,23 @@ const ListaBase = (props) => {
         }
     }
 
+    const handleAddChip = chip => {
+
+        let aux = [...filter]
+        aux.push(chip)
+        setFilter(aux)
+    }
+
+    const handleDeleteChip = (chip, index) => {
+        
+        let newFilter = filter.filter(e => e !== chip)
+        setFilter(newFilter)        
+    }
+
+    useEffect(() => {        
+        listar(rowsPerPage, page + 1)
+    }, [filter])
+
 
     return (
         <Fragment>
@@ -165,6 +217,17 @@ const ListaBase = (props) => {
                                 <Typography variant="h6">
                                     {props.title}
                                 </Typography>
+
+                                <Search style={{marginLeft: "50px"}}/>
+                                <ChipInput
+                                  value={filter}    
+                                  fullWidth={true}  
+                                  fullWidthInput={true}
+                                  style={{minWidth: "400px"}}    
+                                  placeholder={props.filterPlaceholder}
+                                  onAdd={(chip) => handleAddChip(chip)}
+                                  onDelete={(chip, index) => handleDeleteChip(chip, index)}
+                                />
 
                                 <Tooltip title="Inserir novo" placement="left-end">
                                     <Fab aria-label="add" className={classes.fab} color="primary" onClick={() => props.history.push(`${props.match.url}/cadastro/0`)}>
@@ -223,10 +286,10 @@ const ListaBase = (props) => {
                                         </TableCell>
 
                                         {columns.map(column => {
-                                            const value = row[column.id];
+                                        
                                             return (
                                             <TableCell key={`${column.id}`} align={"left"}>
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                {formatCol(column, row)}
                                             </TableCell>
                                             );
                                         })}
@@ -266,6 +329,7 @@ ListaBase.propTypes = {
     controller: PropTypes.any.isRequired,
     title: PropTypes.string.isRequired,
     columnsFormat: PropTypes.any.isRequired,
+    filterPlaceholder: PropTypes.string.isRequired,
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(ListaBase))

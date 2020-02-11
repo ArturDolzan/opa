@@ -1,4 +1,5 @@
 import ModelBase from '../../base/modelBase'
+import enumSexo from '../../enumeradores/enumSexo'
 
 class Pacientes extends ModelBase {
     
@@ -11,8 +12,8 @@ class Pacientes extends ModelBase {
             {id: "email", label: "E-mail", hidden: false, type: "string"},
             {id: "endereco", label: "Endereço", hidden: false, type: "string"},            
             {id: "cpf", label: "CPF", hidden: false, type: "string"},                        
-            {id: "sexo", label: "Sexo", hidden: false, type: "int"},
-            {id: "data_nascimento", label: "Data de nascimento", hidden: false, type: "datetime"},
+            {id: "sexo", label: "Sexo", hidden: false, type: "enum", enum: enumSexo},
+            {id: "data_nascimento", label: "Data de nascimento", hidden: false, type: "date"},
             
         ]
 

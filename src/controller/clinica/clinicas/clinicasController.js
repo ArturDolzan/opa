@@ -2,9 +2,9 @@ import {recuperar, recuperarPorId, salvar, remover, inserirPrimeiraClinica} from
 
 class ClinicasController {
 
-    recuperar = (qtdePagina, numeroPagina, cbSucess, cbError) => {
+    recuperar = (qtdePagina, numeroPagina, filters, cbSucess, cbError) => {
 
-        recuperar(qtdePagina, numeroPagina, cbSucess, cbError)
+        recuperar(qtdePagina, numeroPagina, filters, cbSucess, cbError)
     }
 
     recuperarPorId = (id, cbSucess, cbError) => {

@@ -103,14 +103,24 @@ const CadastroBase = props => {
 
     const handleSave = () => {
 
-        setSubmitting(true)
+        setSubmitting(true)    
 
         let data = props.controller.salvar({...values}, (ret) => {
+            
+            handleSaveImage(ret.data[0]||ret.data, () => {
+                props.openSnackBase("Registro salvo com sucesso!")
+                props.history.goBack()
 
-            props.openSnackBase("Registro salvo com sucesso!")
-            props.history.goBack()
-
-            setSubmitting(false)
+                setSubmitting(false)
+            }, 
+            (error) => {
+                    props.open({
+                        title: "Ops",
+                        text: `Não foi possível salvar a imagem ${values.id}. \n Erro: ${error}`
+                    })
+                }
+            )
+            
         }, (error) => {
             
             props.open({
@@ -120,6 +130,16 @@ const CadastroBase = props => {
 
             setSubmitting(false)
         })
+    }
+
+    const handleSaveImage = (id, cbSucesso, cbErro) => {
+
+        if (!props.urlImage || !typeof props.controller.salvarImagem === "function") {
+            cbSucesso()
+            return 
+        }
+
+        props.controller.salvarImagem(id, props.urlImage, cbSucesso, cbErro)
     }
 
     const handleRemove = () => {
@@ -144,6 +164,13 @@ const CadastroBase = props => {
                 })
             }
         })
+    }
+
+    const disableSaveButton = () => {
+
+        if (props.urlImage && (Object.keys(errors).length === 0 )) return false
+
+        return ((Object.keys(errors).length !== 0 || !dirty) && errors.constructor === Object)
     }
 
   return (
@@ -172,7 +199,7 @@ const CadastroBase = props => {
             )}
 
             <div className={classes.buttonContainer}>
-                <ButtonSave clickSave={handleSave} loading={isSubmitting} success={false} disabled={((Object.keys(errors).length !== 0 || !dirty) && errors.constructor === Object)}/>                                
+                <ButtonSave clickSave={handleSave} loading={isSubmitting} success={false} disabled={ disableSaveButton()}/>                                
                 
                 <Tooltip title="Remover" placement="right-end">
                     <span>

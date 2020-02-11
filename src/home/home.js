@@ -21,7 +21,7 @@ const Home = (props) => {
     const checkFirstClinic = () => {
 
         let clinicasController = new ClinicasController()
-        clinicasController.recuperar(1, 1, (ret) => {
+        clinicasController.recuperar(1, 1, [], (ret) => {
 
             if (ret.data.data.length === 0) {
                 renderLaunchClinicDialog()

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import url from '../../../config/urlApi'
 
-export const recuperar = (qtdePagina, numeroPagina, cbSucess, cbError) => {
+export const recuperar = (qtdePagina, numeroPagina, filters, cbSucess, cbError) => {
 
-    axios.get(`${url}/clinicas/${qtdePagina}/${numeroPagina}`)
+    axios.get(`${url}/clinicas/${qtdePagina}/${numeroPagina}/${JSON.stringify(filters)}`)
      .then(cbSucess)
      .catch(cbError)
 }
