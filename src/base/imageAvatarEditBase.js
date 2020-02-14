@@ -9,10 +9,13 @@ import {open} from '../actions/alertDialogBaseAction'
 import url from '../config/urlApi'
 import userPng from '../base/images/user.png'
 import PropTypes from 'prop-types'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
 
 const useStyles = makeStyles(theme => ({
   root: {
-      margin: theme.spacing(1)    
+      margin: theme.spacing(1),
+      cursor: "pointer"    
   },  
   bigger: {
       width: "100px",
@@ -30,6 +33,10 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  img: {
+    maxWidth: "100%",
+    height: "auto",
+  },
 }))
 
 const ImageAvatarEditBase = (props) => {
@@ -38,6 +45,7 @@ const ImageAvatarEditBase = (props) => {
 
   const [urlImage, setUrlImage] = useState(null)
   const [renderAvatar, setRenderAvatar] = useState(false)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
 
@@ -62,7 +70,9 @@ const recuperar = () => {
 
     if (ret.status !== 200) {
       setUrlImage(userPng)
-	}
+      setRenderAvatar(true)
+      return
+	  }
 	
 	setUrlImage(`${url}/${ret.data}`)
 
@@ -91,24 +101,47 @@ const handleImageChange = (event) => {
 	}
 }
 
+const handleOpen = () => {
+
+  if (!urlImage) {
+    return
+  }
+
+  setOpen(true)
+}
+
+const handleClose = () => {
+
+  setOpen(false)
+}
+
   return (
     <Fragment >
 
 	  <div className={classes.root}>
-		{renderAvatar && (
-			<Avatar className={`${props.isBig ? classes.bigger : ''}`} src={urlImage} />
-		)} 
+      {renderAvatar && (
+        <Avatar className={`${props.isBig ? classes.bigger : ''}`} src={urlImage} onClick={handleOpen}/>
+      )} 
 
-		<Tooltip title="Editar foto" placement="right-end">
-			<span className={classes.divSpan}>
-				<input accept="image/jpeg, image/png" className={classes.input} id="icon-button-file" type="file" onChange={handleImageChange}/>
-				<label htmlFor="icon-button-file">
-					<IconButton size={"small"} aria-label="Editar" className={classes.divIcon} component="span" aria-label="upload picture">
-						<EditIcon fontSize="small"/>
-					</IconButton>
-				</label>
-			</span>
-		</Tooltip>
+      <Tooltip title="Editar foto" placement="right-end">
+        <span className={classes.divSpan} >
+          <input accept="image/jpeg, image/png" className={classes.input} id="icon-button-file" type="file" onChange={handleImageChange}/>
+          <label htmlFor="icon-button-file">
+            <IconButton size={"small"} aria-label="Editar" className={classes.divIcon} component="span" aria-label="upload picture">
+              <EditIcon fontSize="small"/>
+            </IconButton>
+          </label>
+        </span>
+      </Tooltip>
+
+      <Dialog open={open} onClose={handleClose} maxWidth={"lg"}>
+        
+        <DialogContent>
+          <img src={urlImage} className={classes.img}/>
+        </DialogContent>
+        
+      </Dialog>
+
 	 </div>
 
     </Fragment>
