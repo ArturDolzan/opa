@@ -23,16 +23,16 @@ const MenuItens = [
         nome: 'Clínica',
         link: '/clinica',
         divider: false,
-        listas: [            
-            {
-                nome: 'Pacientes',
-                path: '/clinica/paciente'
-            },
-            {
-                nome: 'Clínicas',
-                path: '/clinica/clinica'
-            },
-        ]
+        // listas: [            
+        //     {
+        //         nome: 'Pacientes',
+        //         path: '/clinica/paciente'
+        //     },
+        //     {
+        //         nome: 'Clínicas',
+        //         path: '/clinica/clinica'
+        //     },
+        // ]
     },
     {
         icone: <AttachMoneyIcon />,

@@ -224,9 +224,9 @@ const MiniDrawer = () => {
                         <span>
                           {item.icone}
 
-                          {item.listas && (
+                          {/* {item.listas && (
                               <ExpandMore onClick={(e) => {clickExpandMenu(e, item.listas)}} fontSize={'small'} className={classes.iconList}/>
-                          )}                          
+                          )}                           */}
                         </span>
 
                     </ListItemIcon>

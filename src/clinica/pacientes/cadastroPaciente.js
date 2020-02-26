@@ -137,10 +137,6 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
 
 					<Grid container spacing={2} className={classes.container}>
 
-						{/* <Grid item md={12}>     
-							<ImageAvatarEditBase id={values.id} isBig={true} controller={new PacientesController()}/>
-						</Grid> */}
-
 						<Grid item md={6}>     
 							<TextInputBase
 								id="nome"
