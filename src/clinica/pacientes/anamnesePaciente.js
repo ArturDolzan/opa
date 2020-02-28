@@ -12,6 +12,7 @@ import AnamnesesController from '../../controller/clinica/anamneses/anamnesesCon
 import Anamneses from '../../model/clinica/anamneses/anamneses'
 import ButtonSave from '../../base/buttonSave'
 import { withFormik } from 'formik'
+import * as Yup from 'yup'
 
 import { connect } from "react-redux"
 import {open} from '../../actions/alertDialogBaseAction'
@@ -20,6 +21,19 @@ import {openSnackBase} from '../../actions/snackBaseAction'
 
 const formikEnhancer = withFormik({
     
+    validationSchema: Yup.object().shape({    
+        qp: Yup.string()
+            .max(4000, 'É permitido no máximo 4000 caracteres'),
+        hda: Yup.string()
+            .max(4000, 'É permitido no máximo 4000 caracteres'),
+        ap: Yup.string()
+            .max(4000, 'É permitido no máximo 4000 caracteres'),
+        af: Yup.string()
+            .max(4000, 'É permitido no máximo 4000 caracteres'),
+        hv: Yup.string()
+            .max(4000, 'É permitido no máximo 4000 caracteres'),
+      }),
+
 	mapPropsToValues: () => {
 
 		 let obj = {}
@@ -55,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     paperHeader:{
         display: "flex",
         boxShadow: "0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15)",
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
     },
     divPaperHeaderGrid: {
         minHeight: "75px", 
@@ -117,6 +131,10 @@ const AnamnesePaciente = (props) => {
 
         let data = controller.recuperarPorIdDoPaciente(idPaciente, (ret) => {
             
+            if (!ret.data) {
+                initialValues.id = 0
+            }
+
             Object.assign(initialValues, ret.data)
 
             setRetrieve(true)
@@ -184,7 +202,7 @@ const AnamnesePaciente = (props) => {
                             <div className={classes.divRoot}>
                                 
                                 <Grid container spacing={2} className={classes.container}>
-                                    <Grid item md={7}>     
+                                    <Grid item md={8}>     
                                         <TextInputBase
                                             id="qp"
                                             label="Queixa principal"
@@ -194,13 +212,13 @@ const AnamnesePaciente = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             multiline={true}
-                                            rows={4}
-                                            rowsMax={8}
+                                            rows={10}
+                                            rowsMax={16}
                                         />
 
                                     </Grid>
 
-                                    <Grid item md={7}>     
+                                    <Grid item md={8}>     
                                         <TextInputBase
                                             id="hda"
                                             label="História de doença atual"
@@ -210,13 +228,13 @@ const AnamnesePaciente = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             multiline={true}
-                                            rows={4}
-                                            rowsMax={8}
+                                            rows={10}
+                                            rowsMax={16}
                                         />
 
                                     </Grid>
 
-                                    <Grid item md={7}>     
+                                    <Grid item md={8}>     
                                         <TextInputBase
                                             id="ap"
                                             label="Antecedentes patológicos"
@@ -226,13 +244,13 @@ const AnamnesePaciente = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             multiline={true}
-                                            rows={4}
-                                            rowsMax={8}
+                                            rows={10}
+                                            rowsMax={16}
                                         />
 
                                     </Grid>
 
-                                    <Grid item md={7}>     
+                                    <Grid item md={8}>     
                                         <TextInputBase
                                             id="af"
                                             label="Antecedentes familiares"
@@ -242,24 +260,24 @@ const AnamnesePaciente = (props) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             multiline={true}
-                                            rows={4}
-                                            rowsMax={8}
+                                            rows={10}
+                                            rowsMax={16}
                                         />
 
                                     </Grid>
 
-                                    <Grid item md={7}>     
+                                    <Grid item md={8}>     
                                         <TextInputBase
                                             id="hv"
                                             label="Hábitos de vida"
                                             placeholder="Hábitos de vida"
-                                            error={touched.av && errors.av}
-                                            value={values.av || ""}
+                                            error={touched.hv && errors.hv}
+                                            value={values.hv || ""}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             multiline={true}
-                                            rows={4}
-                                            rowsMax={8}
+                                            rows={10}
+                                            rowsMax={16}
                                         />
 
                                     </Grid>

@@ -223,15 +223,16 @@ const ListaBase = (props) => {
                         <Paper className={classes.paperHeaderGrid} variant="elevation1">
 
                             <div className={classes.divPaperHeaderGrid}>
+
+                                <Typography className={classes.marginLeft2} variant="h6">
+                                    {props.title}
+                                </Typography>
+                                
                                 <Tooltip title="Atualizar" placement="right-end">
                                     <IconButton className={classes.marginLeft2} aria-label="Atualizar" color="primary" onClick={handleRefresh}>
                                         <AutoRenewIcon />
                                     </IconButton>
                                 </Tooltip>
-
-                                <Typography variant="h6">
-                                    {props.title}
-                                </Typography>
 
                                 <Fragment>
                                     {props.renderActions}
@@ -239,7 +240,7 @@ const ListaBase = (props) => {
 
                                 {windowSize > 800 && (
                                     <Fragment>
-                                    <Search style={{marginLeft: "50px"}}/>
+                                    <Search style={{marginLeft: "25px"}}/>
                                     <ChipInput
                                       value={filter}    
                                       fullWidth={true}  
