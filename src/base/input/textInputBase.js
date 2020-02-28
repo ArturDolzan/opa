@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import TextField from '@material-ui/core/TextField'
 import PropTypes from 'prop-types'
 
-const TextInputBase = ({ type, id, label, error, value, onChange, required, ...props }) => {
+const TextInputBase = ({ type, id, label, error, value, onChange, required, multiline, rows, rowsMax, ...props }) => {
 
     return (
 
@@ -19,6 +19,9 @@ const TextInputBase = ({ type, id, label, error, value, onChange, required, ...p
               helperText={error}
               fullWidth={true}
               required={required || false}
+              multiline={multiline || false}
+              rowsMax={rowsMax || 1}
+              rows={rows || 1}
               {...props}
             />
         </Fragment>    

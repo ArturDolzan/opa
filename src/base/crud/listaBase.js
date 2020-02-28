@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from 'react'
+import React, {Fragment, useEffect, useState, useLayoutEffect} from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
@@ -71,6 +71,7 @@ const useStyles = makeStyles(theme => ({
 const ListaBase = (props) => {
 
     const classes = useStyles()
+    const [windowSize, setWindowSize] = useState(0)
 
     useEffect(() => {
 
@@ -81,6 +82,20 @@ const ListaBase = (props) => {
         return () => {
             
         }        
+    }, [])
+
+    useLayoutEffect(() => {
+        
+        function updateSize(){
+          setWindowSize(window.innerWidth)
+        }
+
+        window.addEventListener('resize', updateSize)
+
+        updateSize()
+
+        return () => window.removeEventListener('resize', updateSize)
+
     }, [])
 
     
@@ -218,16 +233,24 @@ const ListaBase = (props) => {
                                     {props.title}
                                 </Typography>
 
-                                <Search style={{marginLeft: "50px"}}/>
-                                <ChipInput
-                                  value={filter}    
-                                  fullWidth={true}  
-                                  fullWidthInput={true}
-                                  style={{minWidth: "400px"}}    
-                                  placeholder={props.filterPlaceholder}
-                                  onAdd={(chip) => handleAddChip(chip)}
-                                  onDelete={(chip, index) => handleDeleteChip(chip, index)}
-                                />
+                                <Fragment>
+                                    {props.renderActions}
+                                </Fragment>
+
+                                {windowSize > 800 && (
+                                    <Fragment>
+                                    <Search style={{marginLeft: "50px"}}/>
+                                    <ChipInput
+                                      value={filter}    
+                                      fullWidth={true}  
+                                      fullWidthInput={true}
+                                      style={{minWidth: "400px"}}    
+                                      placeholder={props.filterPlaceholder}
+                                      onAdd={(chip) => handleAddChip(chip)}
+                                      onDelete={(chip, index) => handleDeleteChip(chip, index)}
+                                    />
+                                    </Fragment>
+                                )}
 
                                 <Tooltip title="Inserir novo" placement="left-end">
                                     <Fab aria-label="add" className={classes.fab} color="primary" onClick={() => props.history.push(`${props.match.url}/cadastro/0`)}>
@@ -265,36 +288,42 @@ const ListaBase = (props) => {
                                 </TableHead>
                                 <TableBody >
                                     {rows.map(row => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id} 
-                                            onDoubleClick={() => props.history.push(`${props.match.url}/cadastro/${row.id}`)} 
-                                            onKeyDown={(event) => {handleKeyDown(event, row)}}
-                                            onClick={() => {setSelectedID(row.id)}} selected={selectedID === row.id} 
-                                            classes={{ selected: classes.selected, hover: classes.hover }} 
-                                            className={classes.tableRow}
-                                            >
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id} 
+                                                onDoubleClick={() => props.history.push(`${props.match.url}/cadastro/${row.id}`)} 
+                                                onKeyDown={(event) => {handleKeyDown(event, row)}}
+                                                onClick={() => {
+                                                    setSelectedID(row.id) 
+                                                    if (props.selectedRow) {
+                                                        props.selectedRow(row)
+                                                    }
+                                                }} 
+                                                selected={selectedID === row.id} 
+                                                classes={{ selected: classes.selected, hover: classes.hover }} 
+                                                className={classes.tableRow}
+                                                >
 
-                                        <TableCell
-                                            key={"editaction"}
-                                            align={"left"}
-                                            >
-                                            <Tooltip title="Editar" placement="right-end">
-                                                <IconButton size="small" aria-label="Editar" color="secondary" onClick={() => props.history.push(`${props.match.url}/cadastro/${row.id}`)}>
-                                                    <EditIcon fontSize="small"/>
-                                                </IconButton>
-                                            </Tooltip>
-                                        </TableCell>
-
-                                        {columns.map(column => {
-                                        
-                                            return (
-                                            <TableCell key={`${column.id}`} align={"left"}>
-                                                {formatCol(column, row)}
+                                            <TableCell
+                                                key={"editaction"}
+                                                align={"left"}
+                                                >
+                                                <Tooltip title="Editar" placement="right-end">
+                                                    <IconButton size="small" aria-label="Editar" color="secondary" onClick={() => props.history.push(`${props.match.url}/cadastro/${row.id}`)}>
+                                                        <EditIcon fontSize="small"/>
+                                                    </IconButton>
+                                                </Tooltip>
                                             </TableCell>
-                                            );
-                                        })}
-                                        </TableRow>
-                                    );
+
+                                            {columns.map(column => {
+                                            
+                                                return (
+                                                <TableCell key={`${column.id}`} align={"left"}>
+                                                    {formatCol(column, row)}
+                                                </TableCell>
+                                                );
+                                            })}
+                                            </TableRow>
+                                        );
                                     })}
                                 </TableBody>
                                 </Table>

@@ -8,6 +8,7 @@ import CadastroClinica from './cadastro/cadastroClinica'
 
 import ListaPaciente from './pacientes/listaPaciente'
 import CadastroPaciente from './pacientes/cadastroPaciente'
+import AnamnesePaciente from './pacientes/anamnesePaciente'
 
 
 const Clinica = ({match}) => {
@@ -20,6 +21,7 @@ const Clinica = ({match}) => {
 
             <Route exact path={`${match.url}/paciente`} component={ListaPaciente}/>
             <Route exact path={`${match.url}/paciente/cadastro/:id`} component={CadastroPaciente}/>
+            <Route exact path={`${match.url}/paciente/anamnese/:id`} component={AnamnesePaciente}/>
 
             <Route exact path={`${match.url}/`} component={ClinicaDashboard}/>
             
