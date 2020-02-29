@@ -23,15 +23,15 @@ const formikEnhancer = withFormik({
     
     validationSchema: Yup.object().shape({    
         qp: Yup.string()
-            .max(4000, 'É permitido no máximo 4000 caracteres'),
+            .max(4000, 'É permitido no máximo 4000 caracteres').nullable(),
         hda: Yup.string()
-            .max(4000, 'É permitido no máximo 4000 caracteres'),
+            .max(4000, 'É permitido no máximo 4000 caracteres').nullable(),
         ap: Yup.string()
-            .max(4000, 'É permitido no máximo 4000 caracteres'),
+            .max(4000, 'É permitido no máximo 4000 caracteres').nullable(),
         af: Yup.string()
-            .max(4000, 'É permitido no máximo 4000 caracteres'),
+            .max(4000, 'É permitido no máximo 4000 caracteres').nullable(),
         hv: Yup.string()
-            .max(4000, 'É permitido no máximo 4000 caracteres'),
+            .max(4000, 'É permitido no máximo 4000 caracteres').nullable(),
       }),
 
 	mapPropsToValues: () => {
