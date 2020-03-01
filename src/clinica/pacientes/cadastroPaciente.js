@@ -27,9 +27,7 @@ const formikEnhancer = withFormik({
 		 .nullable(),
 	  sexo: Yup.string()
 		 .required('O campo Sexo é obrigatório!')
-		 .nullable(),
-	  data_nascimento: Yup.date('Formato de data não é válido!')
-		 .nullable(),
+		 .nullable()
 	}),
  
 	mapPropsToValues: () => {

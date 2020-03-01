@@ -21,7 +21,7 @@ const DateInputBase = (props) => {
                     margin="normal"
                     id={props.id}
                     label={props.label}
-                    inputValue={ props.value ? props.value.replace(/\s\d{2}:\d{2}:\d{2,4}$/, '') : props.value}
+                    inputValue={ props.value ? props.value.replace(/\s\d{2}:\d{2}:\d{2,4}$/, '') : "01/01/1990"}
                     error={props.error ? true : false}
                     helperText={props.error}
                     size={"small"}

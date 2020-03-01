@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     },
     fab: {
       position: 'absolute',      
-      right: theme.spacing(5),
+      right: theme.spacing(3),
     },
     tableRow: {
         "&$selected, &$selected:hover": {
@@ -151,7 +151,8 @@ const ListaBase = (props) => {
 
         let data = props.controller.recuperar(qtdePagina, numeroPagina, filter, (ret) => {
 
-            setRows([...ret.data.data])            
+            setRows([...ret.data.data])
+            setTotalRows(parseInt(ret.data.total))            
         }, (error) => {
 
             props.open({
@@ -165,20 +166,22 @@ const ListaBase = (props) => {
     const [selectedID, setSelectedID] = React.useState(null)
     const [rowsPerPage, setRowsPerPage] = React.useState(5)
     const [rows, setRows] = React.useState([])
+    const [totalRows, setTotalRows] = React.useState(0)
     const [columns, setColumns] = React.useState([])
     const [filter, setFilter] = React.useState([])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
 
-        listar(rowsPerPage, page + 1)
+        listar(rowsPerPage, newPage + 1)
     }
 
     const handleChangeRowsPerPage = event => {
-        setRowsPerPage(+event.target.value)
+        
+        setRowsPerPage(event.target.value)
         setPage(0)
-
-        listar(rowsPerPage, page + 1)
+        
+        listar(event.target.value, 1)
     }
 
     const handleRefresh = () => {
@@ -332,7 +335,7 @@ const ListaBase = (props) => {
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 50]}
                                 component="div"
-                                count={rows.length}
+                                count={totalRows}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onChangePage={handleChangePage}

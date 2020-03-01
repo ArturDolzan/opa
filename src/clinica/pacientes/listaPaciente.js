@@ -2,6 +2,9 @@ import React, {Fragment} from 'react'
 import MenuIcon from '@material-ui/icons/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import PolicyIcon from '@material-ui/icons/Policy'
+import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import MenuItem from '@material-ui/core/MenuItem'
 import ListaBase from '../../base/crud/listaBase'
@@ -23,7 +26,6 @@ const ListaPaciente = (props) => {
 
     const handleClose = () => {
         setAnchorEl(null)
-        handleClickAnamnese()
     }
 
     const setarSelectedRow = (row) => {
@@ -36,7 +38,7 @@ const ListaPaciente = (props) => {
             <Fragment>
               
                 <Tooltip title="Mais opções" placement="right-end">
-                    <IconButton style={{minWidth: "auto", marginLeft: "12px"}} 
+                    <IconButton style={{minWidth: "auto", marginLeft: "3px"}} 
                         aria-label="Atualizar" 
                         color="secondary" 
                         onClick={handleClick}>
@@ -51,7 +53,12 @@ const ListaPaciente = (props) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Anamnese</MenuItem>
+                    <MenuItem onClick={handleClickAnamnese}>
+                        <ListItemIcon>
+                            <PolicyIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="inherit">Anamnese</Typography>
+                    </MenuItem>
                 </Menu>
             </Fragment>
         )
@@ -59,6 +66,7 @@ const ListaPaciente = (props) => {
 
     const handleClickAnamnese = () => {
 
+        handleClose()
         if (!selectedRow) {
 
             props.open({
