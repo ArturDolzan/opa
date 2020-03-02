@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Home from '../home/home'
 const Agenda = lazy(() => import('../agenda/agenda'))
 const Clinica = lazy(() => import('../clinica/clinica'))
+const Configuracoes = lazy(() => import('../configuracoes/configuracoes'))
 
 const useStyles = makeStyles(theme => ({
     suspend: {
@@ -41,6 +42,14 @@ const MenuModulos = (props) => {
                         </div>
                     }>
                         <Route path="/clinica" component={Clinica}/>
+                </Suspense>
+
+                <Suspense fallback={
+                        <div className={classes.suspend}>
+                            <CircularProgress/>
+                        </div>
+                    }>
+                        <Route path="/configuracoes" component={Configuracoes}/>
                 </Suspense>
 
                 <Route exact path="/" render={() => (

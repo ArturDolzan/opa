@@ -268,6 +268,12 @@ const ListaBase = (props) => {
                         <Paper className={classes.paperGrid} variant="elevation1">
                             <TableContainer >
                                 <Table stickyHeader aria-label="sticky table">
+
+                                <colgroup>
+                                    <col width="5%" />
+                                    <col width="10%" />
+                                </colgroup>
+
                                 <TableHead>                                    
                                     <TableRow >
 

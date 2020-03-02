@@ -22,13 +22,15 @@ import axios from 'axios'
     (async () => {
 
         try{
-            const response = await axios.get(props.url)
+            const response = props.url.recuperar(10, 1, [], ret => {
+              
+              if (active) {
+                 setOptions(ret.data.data)
+              }
 
-            const dados = await response.data
-
-            if (active) {
-                setOptions(dados)
-            }
+            }, error => {              
+              alert(error)
+            })//axios.get(props.url)
 
         } catch(e) {            
             console.log(`Erro na requisição: ${e.message}`)
@@ -48,7 +50,7 @@ import axios from 'axios'
 
   return (
     <Autocomplete
-      id={props.nome}
+      id={props.id}
       loadingText={'Carregando...'}
       noOptionsText={'Nenhum valor selecionado'}
       onChange={props.getValueSelected}
@@ -73,7 +75,8 @@ import axios from 'axios'
           {...params}
           label={props.label}
           fullWidth
-          variant="standard"
+          variant="outlined"
+          size={"small"}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -90,9 +93,9 @@ import axios from 'axios'
 }
 
 AutoComplete.propTypes = {
-    nome: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
+    url: PropTypes.any.isRequired,
     chave: PropTypes.string.isRequired,
     valor:  PropTypes.string.isRequired,
     defaultChave: PropTypes.number,
