@@ -127,6 +127,10 @@ const ListaBase = (props) => {
             return formatColDate(column, row)
         }
 
+        if (column.type == "fk") {
+            return row[column.relation][column.id]
+        }
+
         return row[column.id]
     }
 

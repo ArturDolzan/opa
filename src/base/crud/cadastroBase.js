@@ -105,7 +105,9 @@ const CadastroBase = props => {
 
         setSubmitting(true)    
 
-        let data = props.controller.salvar({...values}, (ret) => {
+        let dto = removeAssociationBeforeSave({...values})
+
+        let data = props.controller.salvar(dto, (ret) => {
             
             handleSaveImage(ret.data[0]||ret.data, () => {
                 props.openSnackBase("Registro salvo com sucesso!")
@@ -130,6 +132,19 @@ const CadastroBase = props => {
 
             setSubmitting(false)
         })
+    }
+
+    const removeAssociationBeforeSave = (dto) => {
+
+        Object.keys(dto).forEach(e => {            
+            if (dto[e]) {
+                if ( typeof dto[e] === 'object') {
+                    delete dto[e]
+                }
+            }            
+        })
+
+        return dto
     }
 
     const handleSaveImage = (id, cbSucesso, cbErro) => {

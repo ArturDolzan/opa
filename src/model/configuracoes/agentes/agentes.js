@@ -12,6 +12,8 @@ class Agentes extends ModelBase {
             {id: "cpf", label: "CPF", hidden: false, type: "string"},                        
             {id: "data_cadastro", label: "Data de cadastro", hidden: false, type: "date"},
             {id: "password", label: "Senha", hidden: true, type: "password"},
+            {id: "idcargo", label: "Cargo", hidden: true, type: "int"},
+            {id: "descricao", label: "Cargo", hidden: false, type: "fk", relation: "cargos"},
         ]
 
         this.fields = [...this.fields, ...model]

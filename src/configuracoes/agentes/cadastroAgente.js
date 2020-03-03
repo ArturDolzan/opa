@@ -183,7 +183,7 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
                                 chave="id"
                                 valor="descricao"
                                 defaultChave={values.idcargo}
-								defaultValor={"teste"}
+								defaultValor={values.cargos.descricao}
 								getValueSelected={(event, value) => {
 									
 									setFieldValue('idcargo', value ? value.id : 0)
