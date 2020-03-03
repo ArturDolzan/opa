@@ -55,7 +55,6 @@ import axios from 'axios'
       noOptionsText={'Nenhum valor selecionado'}
       onChange={props.getValueSelected}
       defaultValue={ props.defaultChave ? {[props.chave]: props.defaultChave, [props.valor]: props.defaultValor} : null}
-      style={{ width: 300 }}
       open={open}
       onOpen={() => {
         setOpen(true)
