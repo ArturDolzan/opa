@@ -25,6 +25,9 @@ const formikEnhancer = withFormik({
 	  email: Yup.string()
 		 .required('O campo e-mail é obrigatório!')
 		 .email('Formato de e-mail não é válido!')
+		 .nullable(),
+	  idcargo: Yup.number()
+		 .required('O campo cargo é obrigatório!')
 		 .nullable()
 	}),
  
@@ -181,12 +184,14 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
                                 label="Cargo"
                                 url={new CargosController()}
                                 chave="id"
-                                valor="descricao"
+								valor="descricao"
+								required={true}
+								error={touched.idcargo && errors.idcargo}
                                 defaultChave={values.idcargo}
-								defaultValor={values.cargos.descricao}
+								defaultValor={values.cargos ? values.cargos.descricao : null}
+								onBlur={handleBlur}
 								getValueSelected={(event, value) => {
-									
-									setFieldValue('idcargo', value ? value.id : 0)
+									setFieldValue('idcargo', value ? value.id : null)
 								}}
                             />
 						</Grid>

@@ -76,6 +76,9 @@ import axios from 'axios'
           fullWidth
           variant="outlined"
           size={"small"}
+          required={props.required || false}
+          error={props.error ? true : false}
+          helperText={props.error}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -98,7 +101,9 @@ AutoComplete.propTypes = {
     chave: PropTypes.string.isRequired,
     valor:  PropTypes.string.isRequired,
     defaultChave: PropTypes.number,
-    defaultValor: PropTypes.string
+    defaultValor: PropTypes.string,
+    required: PropTypes.bool,
+    error: PropTypes.string
 }
 
 export default AutoComplete
