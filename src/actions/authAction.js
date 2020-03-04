@@ -35,6 +35,7 @@ export const setAuth = (auth) => (
             localStorage.setItem("email", response.data.email)
             localStorage.setItem("idtenant", response.data.idtenant)
             localStorage.setItem("name", response.data.name)
+            localStorage.setItem("master", response.data.master)
             
             axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
 
@@ -43,14 +44,15 @@ export const setAuth = (auth) => (
                 email: response.data.email,
                 idtenant: response.data.idtenant,
                 token: response.data.token,
-                name: response.data.name
+                name: response.data.name,
+                master: response.data.master
             }))
         })
         .catch(function (error) {
 
             dispatch(open({
                 title: "Falha de login",
-                text: error.response.data
+                text: "Não foi possível se autenticar"
             }))
 
         })    
@@ -64,13 +66,15 @@ export const setAuth = (auth) => (
         localStorage.removeItem("email")
         localStorage.removeItem("idtenant")
         localStorage.removeItem("name")
+        localStorage.removeItem("master")
 
         dispatch(alterarAuth({
             isLogged: false,
             email: '',
             idtenant: 0,
             token: '',
-            name: ''
+            name: '',
+            master: false
         }))
        
      }

@@ -28,3 +28,27 @@ export const remover = (id, cbSucess, cbError) => {
      .then(cbSucess)
      .catch(cbError)
 }
+
+export const recuperarImagem = (id, cbSucess, cbError) => {
+
+    axios.get(`${url}/agentes/imagem/${id}`)
+     .then(cbSucess)
+     .catch(cbError)
+}
+
+export const salvarImagem = (id, file, cbSucess, cbError) => {
+
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("type", file.type)
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    }
+    axios
+      .post(`${url}/agentes/salvarimagem/${id}`, formData, config)
+      .then(cbSucess)
+      .catch(cbError)
+}

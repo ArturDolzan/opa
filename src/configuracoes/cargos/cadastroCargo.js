@@ -2,6 +2,7 @@ import React, {Fragment} from 'react'
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
 import TextInputBase from '../../base/input/textInputBase'
+import initialValue from '../../base/crud/initialValueHelper'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -20,13 +21,7 @@ const formikEnhancer = withFormik({
  
 	mapPropsToValues: () => {
 
-		 let obj = {}
-		 new Cargos().fields.map(x => x.id).map( (item, idx) => {
-			  
-			  obj[item] = null
-
-			  return obj
-		 })
+		let obj = initialValue(new Cargos())
 
 		 return obj
 	},

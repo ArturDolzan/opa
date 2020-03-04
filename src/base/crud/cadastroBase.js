@@ -1,4 +1,5 @@
 import React, {Fragment, useEffect} from 'react'
+import handleError from '../errorHelper/errorHelper'
 import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ButtonSave from '../../base/buttonSave'
@@ -96,7 +97,7 @@ const CadastroBase = props => {
             
             props.open({
                 title: "Ops",
-                text: `Não foi possível recuperar o registro ${id}. \n Erro: ${error}`
+                text: `Não foi possível recuperar o registro ${id}. \n\n Motivo: ${handleError(error)}`
             })
         })
     }
@@ -107,6 +108,8 @@ const CadastroBase = props => {
 
         let dto = removeAssociationBeforeSave({...values})
 
+        dto = removeIgnoredFieldsBeforeSave({...dto})
+        
         let data = props.controller.salvar(dto, (ret) => {
             
             handleSaveImage(ret.data[0]||ret.data, () => {
@@ -118,7 +121,7 @@ const CadastroBase = props => {
             (error) => {
                     props.open({
                         title: "Ops",
-                        text: `Não foi possível salvar a imagem ${values.id}. \n Erro: ${error}`
+                        text: `Não foi possível salvar a imagem ${values.id}. \n\n Motivo: ${handleError(error)}`
                     })
                 }
             )
@@ -127,7 +130,7 @@ const CadastroBase = props => {
             
             props.open({
                 title: "Ops",
-                text: `Não foi possível salvar o registro ${values.id}. \n Erro: ${error}`
+                text: `Não foi possível salvar o registro ${values.id}. \n\n Motivo: ${handleError(error)}`
             })
 
             setSubmitting(false)
@@ -142,6 +145,17 @@ const CadastroBase = props => {
                     delete dto[e]
                 }
             }            
+        })
+
+        return dto
+    }
+
+    const removeIgnoredFieldsBeforeSave = (dto) => {
+        
+        if (!props.model) return dto
+
+        props.model.fields.filter(x=>x.ignoreField).map((item, idx) => {  
+            delete dto[item.id]
         })
 
         return dto
@@ -174,7 +188,7 @@ const CadastroBase = props => {
                     
                     props.open({
                         title: "Ops",
-                        text: `Não foi possível remover o registro ${values.id}. \n Erro: ${error}`
+                        text: `Não foi possível remover o registro ${values.id}. \n\n Motivo: ${handleError(error)}`
                     })
                 })
             }
@@ -218,7 +232,7 @@ const CadastroBase = props => {
                 
                 <Tooltip title="Remover" placement="right-end">
                     <span>
-                        <IconButton onClick={handleRemove} disabled={(values.id === 0)} aria-label="Remover" color="secondary" >
+                        <IconButton onClick={handleRemove} disabled={(values.id === 0) || props.disableRemove} aria-label="Remover" color="secondary" >
                             <DeleteIcon />
                         </IconButton>
                     </span>
@@ -245,6 +259,8 @@ CadastroBase.propTypes = {
     renderForm: PropTypes.any.isRequired,
     retrieve: PropTypes.any.isRequired,
     setRetrieve: PropTypes.any.isRequired,
+    disableRemove: PropTypes.bool,
+    model: PropTypes.any
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(CadastroBase))

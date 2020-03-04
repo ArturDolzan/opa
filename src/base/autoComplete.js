@@ -22,7 +22,7 @@ import axios from 'axios'
     (async () => {
 
         try{
-            const response = props.url.recuperar(10, 1, [], ret => {
+            const response = props.controller.recuperar(10, 1, [], ret => {
               
               if (active) {
                  setOptions(ret.data.data)
@@ -30,7 +30,7 @@ import axios from 'axios'
 
             }, error => {              
               alert(error)
-            })//axios.get(props.url)
+            })
 
         } catch(e) {            
             console.log(`Erro na requisição: ${e.message}`)
@@ -97,7 +97,7 @@ import axios from 'axios'
 AutoComplete.propTypes = {
     id: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    url: PropTypes.any.isRequired,
+    controller: PropTypes.any.isRequired,
     chave: PropTypes.string.isRequired,
     valor:  PropTypes.string.isRequired,
     defaultChave: PropTypes.number,

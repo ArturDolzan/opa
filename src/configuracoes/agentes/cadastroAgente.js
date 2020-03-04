@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import TextInputBase from '../../base/input/textInputBase'
 import DateInputBase from '../../base/input/dateInputBase'
 import SelectInputBase from '../../base/input/selectInputBase'
+import initialValue from '../../base/crud/initialValueHelper'
 import Grid from '@material-ui/core/Grid'
 import InputMask from "react-input-mask"
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,6 +15,7 @@ import Agentes from '../../model/configuracoes/agentes/agentes'
 import AgentesController from '../../controller/configuracoes/agentes/agentesController'
 import CargosController from '../../controller/configuracoes/cargos/cargosController'
 import ImageAvatarEditBase from '../../base/imageAvatarEditBase'
+import enumSimNao from '../../model/enumeradores/enumSimNao'
 
 
 const formikEnhancer = withFormik({
@@ -28,18 +30,32 @@ const formikEnhancer = withFormik({
 		 .nullable(),
 	  idcargo: Yup.number()
 		 .required('O campo cargo é obrigatório!')
+		 .nullable(),
+	  confirm_password: Yup.string()
+		 .test("senhasIguais", "Os campos senha e confirmar senha não são iguais!", function(val) {
+
+			if (this.parent.id) return true
+
+			if (this.parent.password !== val ) return false
+			
+			return true
+
+		  })
+		  .test("senhasInformadas", "Os campos senha e confirmar senha são obrigatórios!", function(val) {
+
+			if (!this.parent.id) {
+				if (!this.parent.password || !this.parent.confirm_password) return false
+			}
+			
+			return true
+
+		  })
 		 .nullable()
 	}),
  
 	mapPropsToValues: () => {
-
-		 let obj = {}
-		 new Agentes().fields.map(x => x.id).map( (item, idx) => {
-			  
-			  obj[item] = null
-
-			  return obj
-		 })
+		
+		 let obj = initialValue(new Agentes())
 
 		 return obj
 	},
@@ -84,10 +100,12 @@ const CadastroAgenteForm = props => {
 			<CadastroBase
 				{...props}
 				controller={new AgentesController()}
+				model={new Agentes()}
 				title={"Usuário"}
 				retrieve={retrieve}
 				setRetrieve={setRetrieve}
 				urlImage={urlImage}
+				disableRemove={true}
 				renderForm={renderForm(props, classes, retrieve, setUrlImage)}
 			/>      
 
@@ -131,15 +149,15 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
 			{retrieve && (                
 				<div className={classes.divRoot}>
                 
-					{/* <Grid container spacing={2} className={classes.containerPhoto}>
+					<Grid container spacing={2} className={classes.containerPhoto}>
 						<Grid item sm={12}>     
-							<ImageAvatarEditBase id={values.id} isBig={true} controller={new PacientesController()} changeImage={handleImageChange}/>
+							<ImageAvatarEditBase id={values.id} isBig={true} controller={new AgentesController()} changeImage={handleImageChange}/>
 						</Grid>
-					</Grid> */}
+					</Grid>
 
 					<Grid container spacing={2} className={classes.container}>
 
-						<Grid item sm={6}>     
+						<Grid item sm={5}>     
 							<TextInputBase
 								id="nome"
 								label="Nome"
@@ -152,7 +170,7 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
 							/>
 
 						</Grid>
-						<Grid item sm={6} >     
+						<Grid item sm={5} >     
 							<TextInputBase
 								id="email"
 								label="E-mail"
@@ -162,6 +180,19 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
 								onChange={handleChange}
 								onBlur={handleBlur}
 								required={true}
+							/>
+
+						</Grid>
+
+						<Grid item sm={2} >     
+							<SelectInputBase 
+								id="ativo" 
+								label="Ativo"
+								value={values.ativo}
+								onChange={(item) => {								
+									setFieldValue('ativo', item.target.value)
+								}}
+								enum={enumSimNao}
 							/>
 
 						</Grid>
@@ -182,7 +213,7 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
                             <AutoComplete
                                 id="idcargo"
                                 label="Cargo"
-                                url={new CargosController()}
+                                controller={new CargosController()}
                                 chave="id"
 								valor="descricao"
 								required={true}
@@ -228,7 +259,6 @@ const renderForm = (props, classes, retrieve, setUrlImage) => {
                             </Fragment>
                         )}
 
-                         
 
 					</Grid>
 

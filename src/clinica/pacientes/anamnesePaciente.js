@@ -1,4 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react'
+import handleError from '../../base/errorHelper/errorHelper'
 import {withRouter} from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,6 +9,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import TextInputBase from '../../base/input/textInputBase'
+import initialValue from '../../base/crud/initialValueHelper'
 import AnamnesesController from '../../controller/clinica/anamneses/anamnesesController'
 import Anamneses from '../../model/clinica/anamneses/anamneses'
 import ButtonSave from '../../base/buttonSave'
@@ -36,13 +38,7 @@ const formikEnhancer = withFormik({
 
 	mapPropsToValues: () => {
 
-		 let obj = {}
-		 new Anamneses().fields.map(x => x.id).map( (item, idx) => {
-			  
-			  obj[item] = null
-
-			  return obj
-		 })
+        let obj = initialValue(new Anamneses())
 
 		 return obj
 	},
@@ -143,7 +139,7 @@ const AnamnesePaciente = (props) => {
             
             props.open({
                 title: "Ops",
-                text: `Não foi possível recuperar o registro ${idPaciente}. \n Erro: ${error}`
+                text: `Não foi possível recuperar o registro ${idPaciente}. \n\n Motivo: ${handleError(error)}`
             })
         })
     }
@@ -165,7 +161,7 @@ const AnamnesePaciente = (props) => {
             
             props.open({
                 title: "Ops",
-                text: `Não foi possível salvar o registro ${values.id}. \n Erro: ${error}`
+                text: `Não foi possível salvar o registro ${values.id}. \n\n Motivo: ${handleError(error)}`
             })
 
             setSubmitting(false)

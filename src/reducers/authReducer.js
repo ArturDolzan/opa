@@ -27,7 +27,8 @@ export default (state = initialState, action) => {
                 email: action.payload.email,
                 idtenant: action.payload.idtenant,
                 token: action.payload.token,
-                name: action.payload.name
+                name: action.payload.name,
+                master: action.payload.master
             }
            
        default:
